@@ -1,4 +1,4 @@
-﻿using ReadmeSystem;
+﻿/*using ReadmeSystem;
 using ReadmeSystem.Editor;
 using System.Collections;
 using System.Collections.Generic;
@@ -73,13 +73,14 @@ public class ReadmeHierarchy
 
     }
 
-    /*
+    *//*
     else if (selectionRect.Contains(Event.current.mousePosition))
     {
         if (GUI.Button(frame, "♡️", GUI.skin.label))
         {
             favoriteInstances.Add(instanceID);
         }
-    }*/
+    }*//*
 }
 
+*/
