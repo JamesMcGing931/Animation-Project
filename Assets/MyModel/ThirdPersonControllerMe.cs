@@ -104,6 +104,8 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
+        //ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
         private int _animIDSit;
         private int _animIDSitIdle;
 
@@ -118,6 +120,13 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
+
+        //ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+         AudioSource audioSource;
+         ParticleSystem footstepsFx;
+
+        [Header("Settings")]
+        public AudioClip[] footstepSounds;
 
         private bool IsCurrentDeviceMouse
         {
@@ -134,11 +143,21 @@ namespace StarterAssets
 
         private void Awake()
         {
+            audioSource = GetComponent<AudioSource>();
+            footstepsFx = GetComponent<ParticleSystem>();
+
             // get a reference to our main camera
             if (_mainCamera == null)
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
+        }
+
+        public void Footstep()
+        {
+            int random = Random.Range(0, footstepSounds.Length);
+            var clip = footstepSounds[random];
+            audioSource.PlayOneShot(clip);
         }
 
         private void Start()
@@ -207,6 +226,7 @@ namespace StarterAssets
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
 
+            //fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             _animIDSit = Animator.StringToHash("Sit");
             _animIDSitIdle = Animator.StringToHash("IsSitting");
 
@@ -407,7 +427,7 @@ namespace StarterAssets
                 GroundedRadius);
         }
 
-        private void OnFootstep(AnimationEvent animationEvent)
+/*        private void OnFootstep(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
@@ -417,7 +437,7 @@ namespace StarterAssets
                     AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
                 }
             }
-        }
+        }*/
 
         private void OnLand(AnimationEvent animationEvent)
         {
@@ -429,6 +449,8 @@ namespace StarterAssets
 
 
         ///ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+
 
         private void OnTriggerEnter(Collider other)
         {
