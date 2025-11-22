@@ -124,9 +124,13 @@ namespace StarterAssets
         //ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
          AudioSource audioSource;
          ParticleSystem footstepsFx;
+        public Transform sitPoint;
 
-        [Header("Settings")]
+        [Header("Sounds")]
         public AudioClip[] footstepSounds;
+        public AudioClip[] SitDown;
+        public AudioClip[] SitIdle;
+
 
         private bool IsCurrentDeviceMouse
         {
@@ -157,6 +161,18 @@ namespace StarterAssets
         {
             int random = Random.Range(0, footstepSounds.Length);
             var clip = footstepSounds[random];
+            audioSource.PlayOneShot(clip);
+        }
+
+        public void PlaySitSound()
+        {
+            var clip = SitDown[0];
+                audioSource.PlayOneShot(clip);
+        }
+
+        public void PlaySitIdleSound()
+        {
+            var clip = SitIdle[0];
             audioSource.PlayOneShot(clip);
         }
 
@@ -192,15 +208,16 @@ namespace StarterAssets
             {
                 if (!isSitting && canSit)
                 {
+                    transform.position = sitPoint.position;
+                    transform.rotation = sitPoint.rotation;
 
-                    
                     isSitting = true;
                     if (_hasAnimator)
                     {
-                        _animator.SetBool(_animIDSitIdle, true); // "IsSitting" Animator parameter
+                        _animator.SetBool(_animIDSitIdle, true);
                     }
                 }
-                else if (isSitting)
+                else if (isSitting && Input.anyKey)
                 {
                     isSitting = false;
                     if (_hasAnimator)
@@ -208,7 +225,7 @@ namespace StarterAssets
                         _animator.SetBool(_animIDSitIdle, false);
                     }
                 }
-                _input.sit = false; // Only trigger once per press
+                _input.sit = false; 
             }
         }
 
@@ -329,15 +346,23 @@ namespace StarterAssets
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
-            // update animator if using character
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
-        }
+            {
+                if (isSitting)
+                {
+                        _animator.SetFloat(_animIDSpeed, 0f);
+                        _animator.SetFloat(_animIDMotionSpeed, 0f);
+                    }
+                    return;
+                }
 
-        private void JumpAndGravity()
+            }
+
+            private void JumpAndGravity()
         {
             if (Grounded)
             {

@@ -82,8 +82,8 @@ public class RagdollEnabler : MonoBehaviour
         if (other.CompareTag("Fire"))
         {
             EnableRagdoll();
-/*            Explode();
-*/        }
+           Explode();
+        }
     }
 
     private void Explode()
